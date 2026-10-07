@@ -1,0 +1,8 @@
+{
+  "name": "reprokit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome extension that captures bug reports with DOM replay, console, network, repro steps, HAR and Playwright tests.",
+  "scripts": { "build": "./build.sh" },
+  "devDependencies": { "rrweb": "2.1.7", "rrweb-player": "2.1.7" }
+}

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ReproKit</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="head">
+    <img src="icons/icon32.png" alt="" width="20" height="20">
+    <strong>ReproKit</strong>
+  </header>
+
+  <button id="capture" class="capture">
+    <span class="capture-title">Capture bug</span>
+    <span class="capture-sub" id="captureSub">Saves the last 2 minutes of this tab</span>
+  </button>
+  <button id="record" class="record">Record screen</button>
+  <button id="shareSettings" class="settings-link">Configure share links</button>
+  <p class="hint">Shortcut: <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd></p>
+  <p id="status" class="status" role="status" hidden></p>
+
+  <fieldset class="window">
+    <legend>Look back</legend>
+    <label><input type="radio" name="win" value="60000"> 1 min</label>
+    <label><input type="radio" name="win" value="120000"> 2 min</label>
+    <label><input type="radio" name="win" value="300000"> 5 min</label>
+  </fieldset>
+
+  <section class="recent">
+    <h2>Recent reports</h2>
+    <ul id="recent"></ul>
+  </section>
+  <script src="lib/db.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

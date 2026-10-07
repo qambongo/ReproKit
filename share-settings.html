@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Share links · ReproKit</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="share-settings.css">
+</head>
+<body>
+  <main class="settings">
+    <a class="back" href="popup.html">ReproKit</a>
+    <h1>Share report links</h1>
+    <p>Configure a Supabase project to upload a self-contained report and create an expiring link developers can open in a browser.</p>
+    <form id="settings">
+      <label>Supabase project URL
+        <input id="projectUrl" type="url" placeholder="https://your-project.supabase.co" required>
+      </label>
+      <label>Supabase publishable (anon) key
+        <input id="anonKey" type="password" autocomplete="off" required>
+      </label>
+      <label>Link expiry
+        <select id="expirySeconds">
+          <option value="86400">24 hours</option>
+          <option value="604800">7 days</option>
+          <option value="2592000">30 days</option>
+        </select>
+      </label>
+      <button class="btn primary" type="submit">Save settings</button>
+      <span id="status" role="status" aria-live="polite"></span>
+    </form>
+    <section>
+      <h2>One-time Supabase setup</h2>
+      <p>Create the private bucket and limited upload/read policies in your Supabase project’s SQL Editor. The publishable/anon key is intended for client use; never use a secret or <code>service_role</code> key here.</p>
+      <pre id="sql">insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('reprokit-reports', 'reprokit-reports', false, 52428800, array['text/html'])
+on conflict (id) do update set
+  public = false,
+  file_size_limit = 52428800,
+  allowed_mime_types = array['text/html'];
+
+drop policy if exists "ReproKit report uploads" on storage.objects;
+create policy "ReproKit report uploads"
+on storage.objects for insert to anon
+with check (bucket_id = 'reprokit-reports');
+
+drop policy if exists "ReproKit signed report links" on storage.objects;
+create policy "ReproKit signed report links"
+on storage.objects for select to anon
+using (bucket_id = 'reprokit-reports');</pre>
+      <button id="copySql" class="btn" type="button">Copy SQL</button>
+      <p class="warning">These anon policies are intentionally simple, not access-controlled: anyone who can call your project can upload, list report paths, and create signed links for reports in this bucket. Do not treat uploaded reports as private or store sensitive recordings. Use a dedicated project/bucket and monitor storage usage. Link expiry does not delete the uploaded report.</p>
+    </section>
+  </main>
+  <script src="share-settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Record screen · ReproKit</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="recorder.css">
+</head>
+<body>
+  <main class="recorder">
+    <header class="head">
+      <img src="icons/icon32.png" alt="" width="24" height="24">
+      <div><strong>ReproKit</strong><span>Screen recording</span></div>
+    </header>
+    <label class="field">Title<input id="title" maxlength="160" autocomplete="off"></label>
+    <label class="field">Description<textarea id="description" rows="3" placeholder="What happened? Include what you expected and what you saw."></textarea></label>
+    <div class="controls">
+      <button id="start" class="btn primary">Choose screen and start recording</button>
+      <button id="screenshot" class="btn" disabled>Take screenshot</button>
+      <button id="stop" class="btn danger" disabled>Stop and save report</button>
+    </div>
+    <p id="status" class="status" role="status" aria-live="polite">Choose a screen, window, or tab in the browser prompt. Recording starts only after you select it.</p>
+    <video id="preview" controls muted playsinline hidden></video>
+    <a id="openReport" hidden>Open saved report</a>
+    <p class="privacy">The recording stays in this browser until you download the self-contained report to share it.</p>
+  </main>
+  <script src="lib/db.js"></script>
+  <script src="recorder.js"></script>
+</body>
+</html>
